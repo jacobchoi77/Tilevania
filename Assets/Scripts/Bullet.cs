@@ -1,38 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
-{
-    [SerializeField] float bulletSpeed = 20f;
-    Rigidbody2D myRigidbody;
-    PlayerMovement player;
-    float xSpeed;
-    
-    void Start()
-    {
-        myRigidbody = GetComponent<Rigidbody2D>();
-        player = FindObjectOfType<PlayerMovement>();
-        xSpeed = player.transform.localScale.x * bulletSpeed;
+public class Bullet : MonoBehaviour{
+    [SerializeField] private float bulletSpeed = 20f;
+    private Rigidbody2D _myRigidbody;
+    private PlayerMovement _player;
+    private float _xSpeed;
+
+    private void Start(){
+        _myRigidbody = GetComponent<Rigidbody2D>();
+        _player = FindObjectOfType<PlayerMovement>();
+        _xSpeed = _player.transform.localScale.x * bulletSpeed;
     }
 
-    void Update()
-    {
-        myRigidbody.velocity = new Vector2 (xSpeed, 0f);
+    private void Update(){
+        _myRigidbody.velocity = new Vector2(_xSpeed, 0f);
     }
 
-    void OnTriggerEnter2D(Collider2D other) 
-    {
-        if(other.tag == "Enemy")
-        {
+    private void OnTriggerEnter2D(Collider2D other){
+        if (other != null && other.CompareTag("Enemy")){
             Destroy(other.gameObject);
         }
+
         Destroy(gameObject);
     }
 
-    void OnCollisionEnter2D(Collision2D other) 
-    {
-        Destroy(gameObject);    
+    private void OnCollisionEnter2D(Collision2D other){
+        Destroy(gameObject);
     }
-
 }

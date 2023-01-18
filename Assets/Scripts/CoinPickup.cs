@@ -1,23 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CoinPickup : MonoBehaviour
-{
-    [SerializeField] AudioClip coinPickupSFX;
-    [SerializeField] int pointsForCoinPickup = 100;
-    
-    bool wasCollected = false;
+public class CoinPickup : MonoBehaviour{
+    [SerializeField] private AudioClip coinPickupSfx;
+    [SerializeField] private int pointsForCoinPickup = 100;
 
-    void OnTriggerEnter2D(Collider2D other) 
-    {
-        if (other.tag == "Player" && !wasCollected)
-        {
-            wasCollected = true;
-            FindObjectOfType<GameSession>().AddToScore(pointsForCoinPickup);
-            AudioSource.PlayClipAtPoint(coinPickupSFX, Camera.main.transform.position);
-            gameObject.SetActive(false);
-            Destroy(gameObject);
-        }
+    private bool _wasCollected;
+
+    private void OnTriggerEnter2D(Collider2D other){
+        if (!other.CompareTag("Player") || _wasCollected) return;
+        _wasCollected = true;
+        FindObjectOfType<GameSession>().AddToScore(pointsForCoinPickup);
+        if (Camera.main != null) AudioSource.PlayClipAtPoint(coinPickupSfx, Camera.main.transform.position);
+        GameObject o;
+        (o = gameObject).SetActive(false);
+        Destroy(o);
     }
 }
